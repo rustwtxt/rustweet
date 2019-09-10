@@ -1,4 +1,3 @@
-use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use serde_yaml;
 
@@ -16,19 +15,21 @@ pub struct Data {
 
 lazy_static! {
     pub static ref DATA: Arc<RwLock<Data>> = Arc::new(RwLock::new(init()));
+    pub static ref FILE: String =
+        { format!("{}/.config/rustweet", std::env::var("HOME").unwrap()) };
 }
 
-pub const FILE: &str = "~/.config/rustweet";
-
 pub fn init() -> Data {
-    if !fs::metadata(FILE).is_ok() {
+    let file = format!("{}", *FILE);
+
+    if !fs::metadata(&file).is_ok() {
         eprintln!();
         eprintln!("Configuration file missing: $HOME/.config/rustweet\nFor instructions, please see:\n\t$ rustweet --manual");
         eprintln!();
         process::exit(1);
     }
 
-    let conf_as_str = match fs::read_to_string(FILE) {
+    let conf_as_str = match fs::read_to_string(&file) {
         Ok(data) => data,
         Err(err) => {
             eprintln!();
