@@ -42,3 +42,8 @@ overflow-checks = false
 [dependencies]
 clap = "2.33"
 lazy_static = "1.4"
+serde_yaml = "0.8"
+
+[dependencies.serde]
+version = "1"
+features = ["derive"]

@@ -37,9 +37,6 @@ fn main() {
                 .help("Nick of the user you wish to stop following."),
         )
         .subcommand(
-            clap::SubCommand::with_name("init").about("Initialization wizard for new installs."),
-        )
-        .subcommand(
             clap::SubCommand::with_name("timeline")
                 .about("Displays the followed users' tweets in a timeline."),
         )
@@ -52,12 +49,11 @@ fn main() {
     eprintln!("{:#?}", args);
 
     match args.subcommand() {
-        ("init", _args) => {
+        ("tweet", _args) => {
             eprintln!("{:#?}", _args);
-            conf::init();
         }
         _ => {}
     }
 
-    conf::init();
+    eprintln!("{:#?}", *conf::DATA);
 }

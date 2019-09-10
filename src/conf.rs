@@ -1,11 +1,56 @@
 use lazy_static::lazy_static;
+use serde::{Deserialize, Serialize};
+use serde_yaml;
 
-use std::collections::HashMap;
+use std::fs;
+use std::process;
+use std::sync::{Arc, RwLock};
 
-lazy_static! {
-    pub static ref DATA: HashMap<String, String> = HashMap::new();
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Data {
+    pub nick: String,
+    pub path: String,
+    pub url: String,
+    pub follow: Vec<String>,
 }
 
-pub fn init() {
-    println!("TEST");
+lazy_static! {
+    pub static ref DATA: Arc<RwLock<Data>> = Arc::new(RwLock::new(init()));
+}
+
+pub const FILE: &str = "~/.config/rustweet";
+
+pub fn init() -> Data {
+    if !fs::metadata(FILE).is_ok() {
+        eprintln!();
+        eprintln!("Configuration file missing: $HOME/.config/rustweet\nFor instructions, please see:\n\t$ rustweet --manual");
+        eprintln!();
+        process::exit(1);
+    }
+
+    let conf_as_str = match fs::read_to_string(FILE) {
+        Ok(data) => data,
+        Err(err) => {
+            eprintln!();
+            eprintln!(
+                "Can't read configuration file: $HOME/.config/rustweet -- {:?}",
+                err
+            );
+            eprintln!();
+            process::exit(1);
+        }
+    };
+
+    match serde_yaml::from_str::<Data>(&conf_as_str) {
+        Ok(data) => return data,
+        Err(err) => {
+            eprintln!();
+            eprintln!(
+                "Improperly formatted configuration file: $HOME/.config/rustweet: {:?}",
+                err
+            );
+            eprintln!();
+            process::exit(1);
+        }
+    };
 }
