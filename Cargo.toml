@@ -1,0 +1,44 @@
+[package]
+name = "rustwteet"
+version = "0.1.0"
+authors = ["Ben Morrison <ben@gbmor.dev>"]
+edition = "2018"
+description = "Small command-line client for the twtxt microblogging platform."
+repository = "https://github.com/rustwtxt/rustweet"
+readme = "README.md"
+keywords = ["twtxt", "microblogging", "microblog", "tweet"]
+categories = ["command-line-utilities", "command-line-interface"]
+license = "ISC"
+
+[badges]
+travis-ci = { repository = "rustwtxt/rustweet", branch = "master" }
+codecov = { repository = "rustwtxt/rustweet", branch = "master", service = "github" }
+maintenance = { status = "experimental" }
+
+[profile.release]
+opt-level = 3
+lto = true
+debug = false
+rpath = false
+debug-assertions = false
+overflow-checks = false
+
+[profile.dev]
+opt-level = 0
+lto = false
+debug = true
+rpath = false
+debug-assertions = true
+overflow-checks = true
+
+[profile.bench]
+opt-level = 3
+lto = true
+debug = false
+debug-assertions = false
+rpath = false
+overflow-checks = false
+
+[dependencies]
+clap = "2.33"
+lazy_static = "1.4"
