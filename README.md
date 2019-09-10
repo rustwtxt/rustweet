@@ -1,6 +1,6 @@
 # rustweet &nbsp; [![Build Status](https://travis-ci.com/rustwtxt/rustweet.svg?branch=master)](https://travis-ci.com/rustwtxt/rustweet) [![codecov](https://codecov.io/gh/rustwtxt/rustweet/branch/master/graph/badge.svg?token=4DfKP7oHRQ)](https://codecov.io/gh/rustwtxt/rustweet)
 
-Small `twtxt` client for the command line.
+Small `twtxt` client for the command line. Doesn't work yet. Developed to use `rustwtxt`
 
 ## Notes
 * [`crates.io/crates/rustwtxt`](https://crates.io/crates/rustwtxt)
