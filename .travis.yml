@@ -1,0 +1,17 @@
+language: rust
+
+rust:
+  - stable
+
+os: 
+  - linux
+
+dist: xenial
+
+before_script:
+    - cargo install cargo-tarpaulin
+
+script:
+    - cargo build --verbose
+    - cargo tarpaulin --out Xml --verbose
+    - bash <(curl -s https://codecov.io/bash)
