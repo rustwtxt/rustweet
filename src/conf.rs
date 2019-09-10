@@ -15,8 +15,12 @@ pub struct Data {
 
 lazy_static! {
     pub static ref DATA: Arc<RwLock<Data>> = Arc::new(RwLock::new(init()));
-    pub static ref FILE: String =
-        { format!("{}/.config/rustweet", std::env::var("HOME").unwrap()) };
+    pub static ref FILE: String = {
+        format!(
+            "{}/.config/rustweet",
+            std::env::var("HOME").unwrap_or_else(|_| ".".into())
+        )
+    };
 }
 
 pub fn init() -> Data {
