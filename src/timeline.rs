@@ -3,7 +3,7 @@
 // See LICENSE file for detailed license information.
 //
 use chrono::prelude::*;
-use rustwtxt::TweetMap;
+use rustwtxt::{Tweet, TweetMap, Twtxt};
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -63,10 +63,72 @@ pub fn tweet() {
 }
 
 pub fn show() {
-    format!(
-        "{:#?}",
-        Timeline {
-            tweets: BTreeMap::new(),
+    let twtxt_path = &*conf::DATA.path.clone();
+    let twtxt_str = match fs::read_to_string(twtxt_path) {
+        Ok(data) => data,
+        Err(_) => {
+            eprintln!("Couldn't read local twtxt.txt - omitting from timeline.");
+            "".into()
         }
-    );
+    };
+
+    let nick = &*conf::DATA.nick;
+    let url = &*conf::DATA.url;
+
+    let tweet_lines = twtxt_str.split("\n").collect::<Vec<&str>>();
+    let mut tweet_lines_sanitized = Vec::new();
+    tweet_lines.iter().for_each(|line| {
+        if line == &"" || line.starts_with("#") {
+            return;
+        }
+        let timestamp = line.split("\t").collect::<Vec<&str>>();
+        let line = format!("{}\t{}\t{}", nick, url, line);
+        let line = (timestamp[0].to_string(), line.clone());
+        tweet_lines_sanitized.push(line);
+    });
+
+    let mut follows = pull_followed_tweets();
+
+    tweet_lines_sanitized.iter().for_each(|(k, v)| {
+        follows.insert(k.to_owned(), v.to_owned());
+    });
+
+    follows.iter().for_each(|(_, v)| {
+        println!("{}", v);
+    });
+}
+
+fn pull_followed_tweets() -> BTreeMap<String, String> {
+    let follows = &*conf::DATA.follow;
+    let broken_follows = follows
+        .iter()
+        .map(|each| {
+            let split = each.split(" ").collect::<Vec<&str>>();
+            (split[0].into(), split[1].into())
+        })
+        .collect::<Vec<(String, String)>>();
+
+    let mut tweetmap = BTreeMap::new();
+
+    broken_follows.iter().for_each(|(nick, url)| {
+        let twtxt = match Twtxt::from(url) {
+            Some(data) => data,
+            None => return,
+        };
+        let tweets = twtxt.tweets().clone();
+        tweets.iter().for_each(|(k, v)| {
+            tweetmap.insert(
+                k.clone(),
+                format!(
+                    "{}\t{}\t{}\t{}",
+                    nick,
+                    url,
+                    k.clone(),
+                    v.body().clone()
+                ),
+            );
+        });
+    });
+
+    tweetmap
 }
