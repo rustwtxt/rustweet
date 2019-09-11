@@ -30,7 +30,8 @@ fn create_tmp_file<'a>() -> Result<String, &'a str> {
     let the_time = Utc::now().to_rfc3339();
     let conf = &*conf::DATA.clone();
 
-    let file_name = format!("/tmp/rustweet_ed_{}_{}", conf.nick, the_time);
+    let file_name =
+        format!("/tmp/rustweet_ed_{}_{}", conf.nick, the_time);
     match fs::write(&file_name, "") {
         Ok(_) => Ok(file_name),
         Err(_) => Err("Unable to create temp file"),

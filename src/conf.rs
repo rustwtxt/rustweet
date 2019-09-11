@@ -32,7 +32,9 @@ pub fn init() -> Data {
 
     if !fs::metadata(&file).is_ok() {
         eprintln!();
-        eprintln!("Configuration file missing: $HOME/.config/rustweet\nFor instructions, please see:\n\t$ rustweet --manual");
+        eprintln!("Configuration file missing: $HOME/.config/rustweet");
+        eprintln!("For instructions, please see:");
+        eprintln!("\t$ rustweet --manual");
         eprintln!();
         process::exit(1);
     }
