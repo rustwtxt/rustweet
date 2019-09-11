@@ -16,21 +16,19 @@ pub fn follow(url: &str) {
     let twtxt = if let Ok(val) = rustwtxt::pull_twtxt(url) {
         val
     } else {
-        eprintln!("Can't pull twtxt file.");
+        eprintln!("Can't pull twtxt file - I won't be able to parse the nick out of the metadata.");
         "".into()
     };
 
     let nick = if let Ok(val) = rustwtxt::parse::metadata(&twtxt, "nick") {
         val
     } else {
-        eprintln!("Can't parse nick out of metadata");
+        eprintln!("Can't parse nick out of metadata - please fix entry in file manually.");
         "".into()
     };
 
     let entry = format!("{} {}", nick, url);
     data.push(entry);
-
-    dbg!(data.clone());
 
     let nick = (&*conf::DATA.nick).to_owned();
     let path = (&*conf::DATA.path).to_owned();

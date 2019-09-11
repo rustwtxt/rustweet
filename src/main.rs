@@ -41,8 +41,6 @@ fn main() {
         )
         .get_matches();
 
-    eprintln!("{:#?}", args);
-
     match args.subcommand() {
         ("tweet", _args) => {
             timeline::tweet();
