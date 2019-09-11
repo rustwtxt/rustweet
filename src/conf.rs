@@ -7,7 +7,6 @@ use serde_yaml;
 
 use std::fs;
 use std::process;
-use std::sync::Arc;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Data {
@@ -18,7 +17,7 @@ pub struct Data {
 }
 
 lazy_static! {
-    pub static ref DATA: Arc<Data> = Arc::new(init());
+    pub static ref DATA: Data = init();
     pub static ref FILE: String = {
         format!(
             "{}/.config/rustweet",
