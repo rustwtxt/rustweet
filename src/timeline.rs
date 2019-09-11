@@ -83,6 +83,10 @@ pub fn show() {
             return;
         }
         let timestamp = line.split('\t').collect::<Vec<&str>>();
+        if let Err(_) = DateTime::parse_from_rfc3339(timestamp[0]) {
+            return;
+        }
+
         let line = format!(
             "{}{}{}\n\t{}\n",
             nick.green(),

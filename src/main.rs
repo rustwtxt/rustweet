@@ -41,6 +41,14 @@ fn main() {
         )
         .get_matches();
 
+    if let Some(url) = args.value_of("follow") {
+        user::follow(url);
+        return;
+    } else if let Some(url) = args.value_of("unfollow") {
+        user::unfollow(url);
+        return;
+    }
+
     match args.subcommand() {
         ("tweet", _args) => {
             timeline::tweet();
@@ -50,12 +58,9 @@ fn main() {
             timeline::show();
             return;
         }
-        _ => {}
-    }
-
-    if let Some(url) = args.value_of("follow") {
-        user::follow(url);
-    } else if let Some(url) = args.value_of("unfollow") {
-        user::unfollow(url);
+        (_, _args) => {
+            timeline::show();
+            return;
+        }
     }
 }
