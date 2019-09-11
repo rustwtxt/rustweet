@@ -3,6 +3,7 @@
 // See LICENSE file for detailed license information.
 //
 use chrono::prelude::*;
+use colored::*;
 use rustwtxt::{TweetMap, Twtxt};
 
 use std::collections::BTreeMap;
@@ -82,7 +83,13 @@ pub fn show() {
             return;
         }
         let timestamp = line.split('\t').collect::<Vec<&str>>();
-        let line = format!("{} @ {}\n\t{}\n", nick, url, line);
+        let line = format!(
+            "{}{}{}\n\t{}\n",
+            nick.green(),
+            "@".bold(),
+            url.white(),
+            line.white().bold()
+        );
         let line = (timestamp[0].to_string(), line.clone());
         tweet_lines_sanitized.push(line);
     });
@@ -120,11 +127,12 @@ fn pull_followed_tweets() -> BTreeMap<String, String> {
             tweetmap.insert(
                 k.clone(),
                 format!(
-                    "{} @ {}\n\t{}\t{}\n",
-                    nick,
-                    url,
-                    k.clone(),
-                    (*v.body()).to_string(),
+                    "{}{}{}\n\t{}\t{}\n",
+                    nick.blue(),
+                    "@".bold(),
+                    url.white(),
+                    k.clone().white().bold(),
+                    (*v.body()).to_string().white().bold(),
                 ),
             );
         });
