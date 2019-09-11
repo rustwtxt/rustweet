@@ -29,7 +29,7 @@ pub fn follow(url: &str) {
         } else {
             eprintln!("Can't parse nick out of metadata.");
             eprintln!("Please add it to the entry manually.");
-            "".into()
+            ""
         };
 
     let entry = format!("{} {}", nick, url);

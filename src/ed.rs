@@ -44,14 +44,13 @@ pub fn call() -> String {
         Err(err) => panic!("{:?}", err),
     };
 
-    match process::Command::new(VAR.clone())
+    if let Err(err) = process::Command::new(VAR.clone())
         .arg(tmp_loc.clone())
         .stdin(process::Stdio::inherit())
         .stdout(process::Stdio::inherit())
         .output()
     {
-        Err(err) => eprintln!("{:?}", err),
-        _ => {}
+        eprintln!("{:?}", err);
     };
 
     let body = match fs::read_to_string(tmp_loc.clone()) {
@@ -59,9 +58,8 @@ pub fn call() -> String {
         Err(err) => panic!("{:?}", err),
     };
 
-    match fs::remove_file(tmp_loc) {
-        Err(err) => eprintln!("{:?}", err),
-        _ => {}
+    if let Err(err) = fs::remove_file(tmp_loc) {
+        eprintln!("{:?}", err);
     };
 
     body

@@ -28,9 +28,9 @@ lazy_static! {
 }
 
 pub fn init() -> Data {
-    let file = format!("{}", *FILE);
+    let file = (*FILE).to_string();
 
-    if !fs::metadata(&file).is_ok() {
+    if fs::metadata(&file).is_err() {
         eprintln!();
         eprintln!("Configuration file missing: $HOME/.config/rustweet");
         eprintln!("For instructions, please see:");
@@ -53,7 +53,7 @@ pub fn init() -> Data {
     };
 
     match serde_yaml::from_str::<Data>(&conf_as_str) {
-        Ok(data) => return data,
+        Ok(data) => data,
         Err(err) => {
             eprintln!();
             eprintln!(
@@ -63,5 +63,5 @@ pub fn init() -> Data {
             eprintln!();
             process::exit(1);
         }
-    };
+    }
 }

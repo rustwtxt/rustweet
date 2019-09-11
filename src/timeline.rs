@@ -3,7 +3,7 @@
 // See LICENSE file for detailed license information.
 //
 use chrono::prelude::*;
-use rustwtxt::{Tweet, TweetMap, Twtxt};
+use rustwtxt::{TweetMap, Twtxt};
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -35,7 +35,7 @@ pub fn tweet() {
     };
 
     let mut line_vec =
-        current_tweets.split("\n").collect::<Vec<&str>>();
+        current_tweets.split('\n').collect::<Vec<&str>>();
     let mut trimmed_line_vec = Vec::new();
     line_vec.iter().for_each(|line| {
         if line == &"" {
@@ -75,13 +75,13 @@ pub fn show() {
     let nick = &*conf::DATA.nick;
     let url = &*conf::DATA.url;
 
-    let tweet_lines = twtxt_str.split("\n").collect::<Vec<&str>>();
+    let tweet_lines = twtxt_str.split('\n').collect::<Vec<&str>>();
     let mut tweet_lines_sanitized = Vec::new();
     tweet_lines.iter().for_each(|line| {
-        if line == &"" || line.starts_with("#") {
+        if line == &"" || line.starts_with('#') {
             return;
         }
-        let timestamp = line.split("\t").collect::<Vec<&str>>();
+        let timestamp = line.split('\t').collect::<Vec<&str>>();
         let line = format!("{}\t{}\t{}", nick, url, line);
         let line = (timestamp[0].to_string(), line.clone());
         tweet_lines_sanitized.push(line);
@@ -103,7 +103,7 @@ fn pull_followed_tweets() -> BTreeMap<String, String> {
     let broken_follows = follows
         .iter()
         .map(|each| {
-            let split = each.split(" ").collect::<Vec<&str>>();
+            let split = each.split(' ').collect::<Vec<&str>>();
             (split[0].into(), split[1].into())
         })
         .collect::<Vec<(String, String)>>();
@@ -124,7 +124,7 @@ fn pull_followed_tweets() -> BTreeMap<String, String> {
                     nick,
                     url,
                     k.clone(),
-                    v.body().clone()
+                    (*v.body()).to_string(),
                 ),
             );
         });
