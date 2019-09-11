@@ -82,7 +82,7 @@ pub fn show() {
             return;
         }
         let timestamp = line.split('\t').collect::<Vec<&str>>();
-        let line = format!("{}\t{}\t{}", nick, url, line);
+        let line = format!("{} @ {}\n\t{}\n", nick, url, line);
         let line = (timestamp[0].to_string(), line.clone());
         tweet_lines_sanitized.push(line);
     });
@@ -120,7 +120,7 @@ fn pull_followed_tweets() -> BTreeMap<String, String> {
             tweetmap.insert(
                 k.clone(),
                 format!(
-                    "{}\t{}\t{}\t{}",
+                    "{} @ {}\n\t{}\t{}\n",
                     nick,
                     url,
                     k.clone(),
