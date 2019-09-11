@@ -1,5 +1,5 @@
 //
-// rustwtxt - Copyright (c) 2019 Ben Morrison (gbmor)
+// rustweet - Copyright (c) 2019 Ben Morrison (gbmor)
 // See LICENSE file for detailed license information.
 //
 #[macro_use]
@@ -8,20 +8,15 @@ extern crate lazy_static;
 use clap;
 
 mod conf;
+mod ed;
+mod timeline;
+mod user;
 
 fn main() {
     let args = clap::App::new("rustwtxt")
         .version(clap::crate_version!())
         .author("Ben Morrison <ben@gbmor.dev>")
         .about("command-line twtxt client")
-        .arg(
-            clap::Arg::with_name("config")
-                .short("c")
-                .long("config")
-                .value_name("FILE")
-                .help("Alternate config file to pass to rustwtxt.")
-                .takes_value(true),
-        )
         .arg(
             clap::Arg::with_name("follow")
                 .short("f")
@@ -50,10 +45,19 @@ fn main() {
 
     match args.subcommand() {
         ("tweet", _args) => {
-            eprintln!("{:#?}", _args);
+            timeline::tweet();
+            return;
+        }
+        ("timeline", _args) => {
+            timeline::show();
+            return;
         }
         _ => {}
     }
 
-    eprintln!("{:#?}", *conf::DATA);
+    if let Some(url) = args.value_of("follow") {
+        user::follow(url);
+    } else if let Some(url) = args.value_of("unfollow") {
+        user::unfollow(url);
+    }
 }

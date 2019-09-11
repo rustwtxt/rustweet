@@ -1,9 +1,13 @@
+//
+// rustweet - Copyright (c) 2019 Ben Morrison (gbmor)
+// See LICENSE file for detailed license information.
+//
 use serde::{Deserialize, Serialize};
 use serde_yaml;
 
 use std::fs;
 use std::process;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Data {
@@ -14,7 +18,7 @@ pub struct Data {
 }
 
 lazy_static! {
-    pub static ref DATA: Arc<RwLock<Data>> = Arc::new(RwLock::new(init()));
+    pub static ref DATA: Arc<Data> = Arc::new(init());
     pub static ref FILE: String = {
         format!(
             "{}/.config/rustweet",
