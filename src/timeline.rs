@@ -10,6 +10,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::process;
 
+use crate::cache;
 use crate::conf;
 use crate::ed;
 
@@ -122,6 +123,7 @@ fn pull_followed_tweets() -> BTreeMap<String, String> {
     let mut tweetmap = BTreeMap::new();
 
     broken_follows.iter().for_each(|(nick, url)| {
+        let _modtime = cache::get_remote_modtime(url);
         let twtxt = match Twtxt::from(url) {
             Some(data) => data,
             None => return,

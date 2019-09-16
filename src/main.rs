@@ -7,6 +7,7 @@ extern crate lazy_static;
 
 use clap;
 
+mod cache;
 mod conf;
 mod ed;
 mod timeline;
