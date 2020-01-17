@@ -13,9 +13,11 @@ mod ed;
 mod timeline;
 mod user;
 
+const VERS: &str = clap::crate_version!();
+
 fn main() {
     let args = clap::App::new("rustwtxt")
-        .version(clap::crate_version!())
+        .version(VERS)
         .author("Ben Morrison <ben@gbmor.dev>")
         .about("command-line twtxt client")
         .arg(
@@ -41,6 +43,11 @@ fn main() {
                 .about("Opens your preferred editor to compose a new tweet."),
         )
         .get_matches();
+
+    println!();
+    println!("rustweet v{}", VERS);
+    println!("(c) 2019 Ben Morrison <ben@gbmor.dev>");
+    println!();
 
     if let Some(url) = args.value_of("follow") {
         user::follow(url);
