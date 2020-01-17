@@ -84,7 +84,7 @@ pub fn show() {
             return;
         }
         let timestamp = line.split('\t').collect::<Vec<&str>>();
-        if let Err(_) = DateTime::parse_from_rfc3339(timestamp[0]) {
+        if DateTime::parse_from_rfc3339(timestamp[0]).is_err() {
             return;
         }
 
@@ -95,7 +95,7 @@ pub fn show() {
             url.white(),
             line.white().bold()
         );
-        let line = (timestamp[0].to_string(), line.clone());
+        let line = (timestamp[0].to_string(), line);
         tweet_lines_sanitized.push(line);
     });
 

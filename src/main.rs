@@ -60,15 +60,12 @@ fn main() {
     match args.subcommand() {
         ("tweet", _args) => {
             timeline::tweet();
-            return;
         }
         ("timeline", _args) => {
             timeline::show();
-            return;
         }
         (_, _args) => {
             timeline::show();
-            return;
         }
     }
 }

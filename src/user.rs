@@ -20,7 +20,7 @@ pub fn follow(url: &str) {
         eprintln!(
             "I won't be able to parse the nick out of the metadata."
         );
-        "".into()
+        String::new()
     };
 
     let nick =
@@ -29,7 +29,7 @@ pub fn follow(url: &str) {
         } else {
             eprintln!("Can't parse nick out of metadata.");
             eprintln!("Please add it to the entry manually.");
-            ""
+            String::new()
         };
 
     let entry = format!("{} {}", nick, url);
